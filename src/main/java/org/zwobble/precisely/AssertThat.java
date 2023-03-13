@@ -3,7 +3,7 @@ package org.zwobble.precisely;
 import static org.zwobble.precisely.Indentation.indent;
 
 public class AssertThat {
-    public AssertThat() {
+    private AssertThat() {
     }
 
     public static <T> void assertThat(T value, Matcher<T> matcher) {

@@ -1,7 +1,7 @@
 package org.zwobble.precisely;
 
 public class Matchers {
-    public Matchers() {
+    private Matchers() {
     }
 
     public static Matcher<Object> anything() {
