@@ -12,6 +12,11 @@ public class Matchers {
         return new AllOfMatcher<>(Arrays.asList(matchers));
     }
 
+    @SafeVarargs
+    public static <T> Matcher<T> anyOf(Matcher<T>... matchers) {
+        return new AnyOfMatcher<>(Arrays.asList(matchers));
+    }
+
     public static Matcher<Object> anything() {
         return new AnythingMatcher();
     }
