@@ -1,6 +1,6 @@
 package org.zwobble.precisely;
 
-public class AnythingMatcher implements Matcher<Object> {
+class AnythingMatcher implements Matcher<Object> {
     @Override
     public MatchResult match(Object actual) {
         return MatchResult.matched();
