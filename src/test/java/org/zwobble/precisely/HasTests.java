@@ -27,7 +27,7 @@ public class HasTests {
 
         var result = matcher.match(new User("bobbity"));
 
-        assertEquals(unmatched("name mismatched:\n  was bobbity"), result);
+        assertEquals(unmatched("name mismatched:\n  was \"bobbity\""), result);
     }
 
     @Test
@@ -36,6 +36,6 @@ public class HasTests {
 
         var result = matcher.describe();
 
-        assertEquals("name:\n  bob", result);
+        assertEquals("name:\n  \"bob\"", result);
     }
 }

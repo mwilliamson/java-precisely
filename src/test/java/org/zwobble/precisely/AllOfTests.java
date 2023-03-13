@@ -32,7 +32,7 @@ public class AllOfTests {
 
         var result = matcher.match(new User("Bob", "alice@example.com"));
 
-        assertEquals(unmatched("emailAddress mismatched:\n  was alice@example.com"), result);
+        assertEquals(unmatched("emailAddress mismatched:\n  was \"alice@example.com\""), result);
     }
 
     @Test
@@ -47,8 +47,8 @@ public class AllOfTests {
         assertEquals("""
             all of:
              * username:
-                 Bob
+                 "Bob"
              * emailAddress:
-                 bob@example.com""", result);
+                 "bob@example.com\"""", result);
     }
 }

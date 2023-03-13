@@ -40,10 +40,10 @@ public class AnyOfTests {
 
         assertEquals(unmatched("""
             did not match any of:
-             * bob
-               was alice
-             * jim
-               was alice"""), result);
+             * "bob"
+               was "alice"
+             * "jim"
+               was "alice\""""), result);
     }
 
     @Test
@@ -58,8 +58,8 @@ public class AnyOfTests {
         assertEquals("""
             any of:
              * username:
-                 Bob
+                 "Bob"
              * emailAddress:
-                 bob@example.com""", result);
+                 "bob@example.com\"""", result);
     }
 }
