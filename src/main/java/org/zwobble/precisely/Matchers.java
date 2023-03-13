@@ -1,9 +1,15 @@
 package org.zwobble.precisely;
 
+import java.util.Arrays;
 import java.util.function.Function;
 
 public class Matchers {
     private Matchers() {
+    }
+
+    @SafeVarargs
+    public static <T> Matcher<T> allOf(Matcher<T>... matchers) {
+        return new AllOfMatcher<>(Arrays.asList(matchers));
     }
 
     public static Matcher<Object> anything() {

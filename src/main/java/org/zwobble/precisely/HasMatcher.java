@@ -22,12 +22,20 @@ class HasMatcher<T, U> implements Matcher<T> {
         if (result.isMatch()) {
             return MatchResult.matched();
         } else {
-            return MatchResult.unmatched("name mismatched:" + indent("\n" + result.explanation()));
+            return MatchResult.unmatched(String.format(
+                "%s mismatched:%s",
+                name,
+                indent("\n" + result.explanation())
+            ));
         }
     }
 
     @Override
     public String describe() {
-        return "name:" + indent("\n" + matcher.describe());
+        return String.format(
+            "%s:%s",
+            name,
+            indent("\n" + matcher.describe())
+        );
     }
 }
