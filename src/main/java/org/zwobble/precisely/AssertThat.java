@@ -10,7 +10,7 @@ public class AssertThat {
         var result = matcher.match(value);
         if (!result.isMatch()) {
             throw new AssertionError(String.format(
-                "Expected:%s\nbut:%s",
+                "\nExpected:%s\nbut:%s",
                 indent("\n" + matcher.describe()),
                 indent("\n" + result.explanation())
             ));
