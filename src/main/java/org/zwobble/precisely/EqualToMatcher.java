@@ -12,12 +12,20 @@ class EqualToMatcher<T> implements Matcher<T> {
         if (value.equals(actual)) {
             return MatchResult.matched();
         } else {
-            return MatchResult.unmatched("was " + actual);
+            return MatchResult.unmatched("was " + valueToString(actual));
         }
     }
 
     @Override
     public String describe() {
-        return value.toString();
+        return valueToString(value);
+    }
+
+    private static String valueToString(Object value) {
+        if (value instanceof String string) {
+            return JavaStrings.toJavaLiteralString(string);
+        } else {
+            return value.toString();
+        }
     }
 }

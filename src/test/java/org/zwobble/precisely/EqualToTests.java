@@ -19,7 +19,17 @@ public class EqualToTests {
     }
 
     @Test
+    public void explanationOfStringMismatchIsWrittenAsJavaString() {
+        assertEquals(unmatched("was \"Hello\""), equalTo("hello").match("Hello"));
+    }
+
+    @Test
     public void descriptionIsToStringOfValue() {
         assertEquals("1", equalTo(1).describe());
+    }
+
+    @Test
+    public void descriptionOfStringIsWrittenAsJavaString() {
+        assertEquals("\"hello\"", equalTo("hello").describe());
     }
 }
