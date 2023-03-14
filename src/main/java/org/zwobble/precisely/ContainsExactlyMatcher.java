@@ -9,9 +9,9 @@ import static org.zwobble.precisely.Indentation.indent;
 import static org.zwobble.precisely.JavaValues.valueToString;
 
 class ContainsExactlyMatcher<T> implements Matcher<Iterable<T>> {
-    private final List<Matcher<T>> elementMatchers;
+    private final List<Matcher<? super T>> elementMatchers;
 
-    ContainsExactlyMatcher(List<Matcher<T>> elementMatchers) {
+    ContainsExactlyMatcher(List<Matcher<? super T>> elementMatchers) {
         this.elementMatchers = elementMatchers;
     }
 
@@ -52,7 +52,7 @@ class ContainsExactlyMatcher<T> implements Matcher<Iterable<T>> {
     }
 
     private MatchResult matchElement(
-        Matcher<T> elementMatcher,
+        Matcher<? super T> elementMatcher,
         List<T> actualElements,
         Set<Integer> matchedElementIndexes
     ) {

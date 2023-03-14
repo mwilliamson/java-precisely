@@ -7,9 +7,9 @@ import static org.zwobble.precisely.Indentation.indent;
 class HasMatcher<T, U> implements Matcher<T> {
     private final String name;
     private final Function<T, U> extract;
-    private final Matcher<U> matcher;
+    private final Matcher<? super U> matcher;
 
-    HasMatcher(String name, Function<T, U> extract, Matcher<U> matcher) {
+    HasMatcher(String name, Function<T, U> extract, Matcher<? super U> matcher) {
         this.name = name;
         this.extract = extract;
         this.matcher = matcher;

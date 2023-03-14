@@ -9,13 +9,13 @@ public class Matchers {
     }
 
     @SafeVarargs
-    public static <T> Matcher<T> allOf(Matcher<T>... matchers) {
-        return new AllOfMatcher<>(Arrays.asList(matchers));
+    public static <T> Matcher<T> allOf(Matcher<? super T>... matchers) {
+        return new AllOfMatcher<T>(Arrays.asList(matchers));
     }
 
     @SafeVarargs
-    public static <T> Matcher<T> anyOf(Matcher<T>... matchers) {
-        return new AnyOfMatcher<>(Arrays.asList(matchers));
+    public static <T> Matcher<T> anyOf(Matcher<? super T>... matchers) {
+        return new AnyOfMatcher<T>(Arrays.asList(matchers));
     }
 
     public static Matcher<Object> anything() {
@@ -23,15 +23,15 @@ public class Matchers {
     }
 
     @SafeVarargs
-    public static <T> Matcher<Iterable<T>> containsExactly(Matcher<T>... matchers) {
-        return new ContainsExactlyMatcher<>(Arrays.asList(matchers));
+    public static <T> Matcher<Iterable<T>> containsExactly(Matcher<? super T>... matchers) {
+        return new ContainsExactlyMatcher<T>(Arrays.asList(matchers));
     }
 
     public static <T> Matcher<T> equalTo(T value) {
         return new EqualToMatcher<>(value);
     }
 
-    public static <T, U> Matcher<T> has(String name, Function<T, U> extract, Matcher<U> matcher) {
+    public static <T, U> Matcher<T> has(String name, Function<T, U> extract, Matcher<? super U> matcher) {
         return new HasMatcher<>(name, extract, matcher);
     }
 
@@ -40,16 +40,16 @@ public class Matchers {
     }
 
     @SafeVarargs
-    public static <T, U> Matcher<U> instanceOf(Class<T> clazz, Matcher<T>... matchers) {
+    public static <T, U> Matcher<U> instanceOf(Class<T> clazz, Matcher<? super T>... matchers) {
         return new InstanceOfMatcher<>(clazz, Optional.of(allOf(matchers)));
     }
 
     @SafeVarargs
-    public static <T> Matcher<Iterable<T>> isSequence(Matcher<T>... matchers) {
-        return new IsSequenceMatcher<>(Arrays.asList(matchers));
+    public static <T> Matcher<Iterable<T>> isSequence(Matcher<? super T>... matchers) {
+        return new IsSequenceMatcher<T>(Arrays.asList(matchers));
     }
 
-    public static <T> Matcher<T> not(Matcher<T> matcher) {
+    public static <T> Matcher<T> not(Matcher<? super T> matcher) {
         return new NotMatcher<T>(matcher);
     }
 }

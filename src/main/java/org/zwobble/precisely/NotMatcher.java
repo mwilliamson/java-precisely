@@ -1,9 +1,9 @@
 package org.zwobble.precisely;
 
 class NotMatcher<T> implements Matcher<T> {
-    private final Matcher<T> matcher;
+    private final Matcher<? super T> matcher;
 
-    NotMatcher(Matcher<T> matcher) {
+    NotMatcher(Matcher<? super T> matcher) {
         this.matcher = matcher;
     }
 

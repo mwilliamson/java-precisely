@@ -6,9 +6,9 @@ import static org.zwobble.precisely.Indentation.indent;
 import static org.zwobble.precisely.JavaValues.valueToString;
 
 public class IsSequenceMatcher<T> implements Matcher<Iterable<T>> {
-    private final List<Matcher<T>> elementMatchers;
+    private final List<Matcher<? super T>> elementMatchers;
 
-    IsSequenceMatcher(List<Matcher<T>> elementMatchers) {
+    IsSequenceMatcher(List<Matcher<? super T>> elementMatchers) {
         this.elementMatchers = elementMatchers;
     }
 

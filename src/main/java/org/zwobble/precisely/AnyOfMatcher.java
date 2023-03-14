@@ -5,9 +5,9 @@ import java.util.List;
 import static org.zwobble.precisely.Indentation.indent;
 
 class AnyOfMatcher<T> implements Matcher<T> {
-    private final List<Matcher<T>> matchers;
+    private final List<Matcher<? super T>> matchers;
 
-    AnyOfMatcher(List<Matcher<T>> matchers) {
+    AnyOfMatcher(List<Matcher<? super T>> matchers) {
         this.matchers = matchers;
     }
 
