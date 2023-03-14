@@ -38,4 +38,8 @@ public class Matchers {
     public static <T, U> Matcher<U> instanceOf(Class<T> clazz, Matcher<T>... matchers) {
         return new InstanceOfMatcher<>(clazz, Optional.of(allOf(matchers)));
     }
+
+    public static <T> Matcher<T> not(Matcher<T> matcher) {
+        return new NotMatcher<T>(matcher);
+    }
 }
