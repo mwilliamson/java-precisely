@@ -39,6 +39,11 @@ public class Matchers {
         return new InstanceOfMatcher<>(clazz, Optional.of(allOf(matchers)));
     }
 
+    @SafeVarargs
+    public static <T> Matcher<Iterable<T>> isSequence(Matcher<T>... matchers) {
+        return new IsSequenceMatcher<>(Arrays.asList(matchers));
+    }
+
     public static <T> Matcher<T> not(Matcher<T> matcher) {
         return new NotMatcher<T>(matcher);
     }

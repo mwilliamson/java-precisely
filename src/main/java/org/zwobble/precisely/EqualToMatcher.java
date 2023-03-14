@@ -1,5 +1,7 @@
 package org.zwobble.precisely;
 
+import static org.zwobble.precisely.JavaValues.valueToString;
+
 class EqualToMatcher<T> implements Matcher<T> {
     private final T value;
 
@@ -19,13 +21,5 @@ class EqualToMatcher<T> implements Matcher<T> {
     @Override
     public String describe() {
         return valueToString(value);
-    }
-
-    private static String valueToString(Object value) {
-        if (value instanceof String string) {
-            return JavaStrings.toJavaLiteralString(string);
-        } else {
-            return value.toString();
-        }
     }
 }
