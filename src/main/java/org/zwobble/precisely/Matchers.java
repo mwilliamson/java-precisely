@@ -22,6 +22,11 @@ public class Matchers {
         return new AnythingMatcher();
     }
 
+    @SafeVarargs
+    public static <T> Matcher<Iterable<T>> containsExactly(Matcher<T>... matchers) {
+        return new ContainsExactlyMatcher<>(Arrays.asList(matchers));
+    }
+
     public static <T> Matcher<T> equalTo(T value) {
         return new EqualToMatcher<>(value);
     }
