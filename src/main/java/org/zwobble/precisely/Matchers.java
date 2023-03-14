@@ -1,6 +1,7 @@
 package org.zwobble.precisely;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -13,9 +14,17 @@ public class Matchers {
         return new AllOfMatcher<T>(Arrays.asList(matchers));
     }
 
+    public static <T> Matcher<T> allOf(List<Matcher<? super T>> matchers) {
+        return new AllOfMatcher<T>(matchers);
+    }
+
     @SafeVarargs
     public static <T> Matcher<T> anyOf(Matcher<? super T>... matchers) {
         return new AnyOfMatcher<T>(Arrays.asList(matchers));
+    }
+
+    public static <T> Matcher<T> anyOf(List<Matcher<? super T>> matchers) {
+        return new AnyOfMatcher<T>(matchers);
     }
 
     public static Matcher<Object> anything() {
@@ -25,6 +34,10 @@ public class Matchers {
     @SafeVarargs
     public static <T> Matcher<Iterable<T>> containsExactly(Matcher<? super T>... matchers) {
         return new ContainsExactlyMatcher<T>(Arrays.asList(matchers));
+    }
+
+    public static <T> Matcher<Iterable<T>> containsExactly(List<Matcher<? super T>> matchers) {
+        return new ContainsExactlyMatcher<T>(matchers);
     }
 
     public static <T> Matcher<T> equalTo(T value) {
@@ -44,9 +57,17 @@ public class Matchers {
         return new InstanceOfMatcher<>(clazz, Optional.of(allOf(matchers)));
     }
 
+    public static <T, U> Matcher<U> instanceOf(Class<T> clazz, List<Matcher<? super T>> matchers) {
+        return new InstanceOfMatcher<>(clazz, Optional.of(allOf(matchers)));
+    }
+
     @SafeVarargs
     public static <T> Matcher<Iterable<T>> isSequence(Matcher<? super T>... matchers) {
         return new IsSequenceMatcher<T>(Arrays.asList(matchers));
+    }
+
+    public static <T> Matcher<Iterable<T>> isSequence(List<Matcher<? super T>> matchers) {
+        return new IsSequenceMatcher<T>(matchers);
     }
 
     public static <T> Matcher<T> not(Matcher<? super T> matcher) {
