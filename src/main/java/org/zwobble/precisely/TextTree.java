@@ -51,7 +51,7 @@ class TextTreeWriter {
     private int indentation = 0;
 
     public void write(String text) {
-        builder.append(text);
+        builder.append(text.replace("\n", "\n" + " ".repeat(indentation)));
     }
 
     @Override
@@ -90,7 +90,7 @@ final class TextTreeLines extends TextTree {
         boolean isFirst = true;
         for (var line : lines) {
             if (!isFirst) {
-                writer.write("\n");
+                writer.newLine();
             }
             line.write(writer);
             isFirst = false;
