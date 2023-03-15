@@ -3,8 +3,8 @@ package org.zwobble.precisely;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.zwobble.precisely.Assertions.assertUnmatched;
 import static org.zwobble.precisely.MatchResult.matched;
-import static org.zwobble.precisely.MatchResult.unmatched;
 import static org.zwobble.precisely.Matchers.equalTo;
 import static org.zwobble.precisely.Matchers.not;
 
@@ -24,7 +24,7 @@ public class NotTests {
 
         var result = matcher.match(1);
 
-        assertEquals(unmatched("matched: 1"), result);
+        assertUnmatched("matched:\n  1", result);
     }
 
     @Test
@@ -33,6 +33,6 @@ public class NotTests {
 
         var result = matcher.describe();
 
-        assertEquals("not: 1", result);
+        assertEquals("not:\n  1", result.toString());
     }
 }

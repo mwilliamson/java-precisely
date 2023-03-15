@@ -1,11 +1,29 @@
 package org.zwobble.precisely;
 
-public record MatchResult(boolean isMatch, String explanation) {
+public class MatchResult {
+    private static MatchResult MATCHED = new MatchResult(true, TextTree.empty());
+
     public static MatchResult matched() {
-        return new MatchResult(true, "");
+        return MATCHED;
     }
 
-    public static MatchResult unmatched(String explanation) {
+    public static MatchResult unmatched(TextTree explanation) {
         return new MatchResult(false, explanation);
+    }
+
+    private final boolean isMatch;
+    private final TextTree explanation;
+
+    private MatchResult(boolean isMatch, TextTree explanation) {
+        this.isMatch = isMatch;
+        this.explanation = explanation;
+    }
+
+    public boolean isMatch() {
+        return isMatch;
+    }
+
+    public TextTree explanation() {
+        return explanation;
     }
 }

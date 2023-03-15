@@ -3,8 +3,8 @@ package org.zwobble.precisely;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.zwobble.precisely.Assertions.assertUnmatched;
 import static org.zwobble.precisely.MatchResult.matched;
-import static org.zwobble.precisely.MatchResult.unmatched;
 import static org.zwobble.precisely.Matchers.*;
 
 public class InstanceOfTests {
@@ -23,7 +23,7 @@ public class InstanceOfTests {
 
         var result = matcher.match(42);
 
-        assertEquals(unmatched("was instance of java.lang.Integer"), result);
+        assertUnmatched("was instance of java.lang.Integer", result);
     }
 
     @Test
@@ -41,7 +41,7 @@ public class InstanceOfTests {
 
         var result = matcher.match("helloo");
 
-        assertEquals(unmatched("length mismatched:\n  was 6"), result);
+        assertUnmatched("length mismatched:\n  was 6", result);
     }
 
     @Test
@@ -50,7 +50,7 @@ public class InstanceOfTests {
 
         var result = matcher.describe();
 
-        assertEquals("is instance of java.lang.String", result);
+        assertEquals("is instance of java.lang.String", result.toString());
     }
 
     @Test
@@ -59,6 +59,6 @@ public class InstanceOfTests {
 
         var result = matcher.describe();
 
-        assertEquals("is instance of java.lang.String and all of:\n * length:\n     5", result);
+        assertEquals("is instance of java.lang.String and all of:\n * length:\n     5", result.toString());
     }
 }

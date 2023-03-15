@@ -6,6 +6,9 @@ public class AssertThat {
     private AssertThat() {
     }
 
+    /**
+     * Assert that a value satisfies a matcher.
+     */
     public static <T> void assertThat(T value, Matcher<T> matcher) {
         var result = matcher.match(value);
         if (!result.isMatch()) {

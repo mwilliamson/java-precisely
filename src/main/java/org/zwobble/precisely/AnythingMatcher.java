@@ -7,7 +7,7 @@ class AnythingMatcher implements Matcher<Object> {
     }
 
     @Override
-    public String describe() {
-        return "anything";
+    public TextTree describe() {
+        return TextTree.text("anything");
     }
 }

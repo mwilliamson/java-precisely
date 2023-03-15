@@ -14,12 +14,12 @@ class EqualToMatcher<T> implements Matcher<T> {
         if (value.equals(actual)) {
             return MatchResult.matched();
         } else {
-            return MatchResult.unmatched("was " + valueToString(actual));
+            return MatchResult.unmatched(TextTree.text("was " + valueToString(actual)));
         }
     }
 
     @Override
-    public String describe() {
-        return valueToString(value);
+    public TextTree describe() {
+        return TextTree.text(valueToString(value));
     }
 }

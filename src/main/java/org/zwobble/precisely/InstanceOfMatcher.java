@@ -1,38 +1,38 @@
 package org.zwobble.precisely;
 
-import java.util.Optional;
+import java.util.List;
 
 class InstanceOfMatcher<T, U> implements Matcher<U> {
     private final Class<T> clazz;
-    private final Optional<Matcher<T>> matcher;
+    private final List<Matcher<? super T>> matchers;
 
-    InstanceOfMatcher(Class<T> clazz, Optional<Matcher<T>> matcher) {
+    InstanceOfMatcher(Class<T> clazz, List<Matcher<? super T>> matchers) {
         this.clazz = clazz;
-        this.matcher = matcher;
+        this.matchers = matchers;
     }
 
     @Override
     public MatchResult match(U actual) {
         if (clazz.isInstance(actual)) {
-            if (matcher.isPresent()) {
-                return matcher.get().match((T) actual);
-            } else {
-                return MatchResult.matched();
-            }
-
+            return new AllOfMatcher<T>(matchers).match((T) actual);
         } else {
-            return MatchResult.unmatched("was instance of " + actual.getClass().getTypeName());
+            return MatchResult.unmatched(TextTree.text("was instance of " + actual.getClass().getTypeName()));
         }
 
     }
 
     @Override
-    public String describe() {
+    public TextTree describe() {
         var description = "is instance of " + clazz.getTypeName();
-        if (matcher.isPresent()) {
-            return description + " and " + matcher.get().describe();
+        if (matchers.isEmpty()) {
+            return TextTree.text(description);
         } else {
-            return description;
+            return TextTree.unorderedList(
+                description + " and all of",
+                matchers.stream()
+                    .map(Matcher::describe)
+                    .toList()
+            );
         }
     }
 }

@@ -2,8 +2,6 @@ package org.zwobble.precisely;
 
 import java.util.function.Function;
 
-import static org.zwobble.precisely.Indentation.indent;
-
 class HasMatcher<T, U> implements Matcher<T> {
     private final String name;
     private final Function<T, U> extract;
@@ -22,20 +20,18 @@ class HasMatcher<T, U> implements Matcher<T> {
         if (result.isMatch()) {
             return MatchResult.matched();
         } else {
-            return MatchResult.unmatched(String.format(
-                "%s mismatched:%s",
-                name,
-                indent("\n" + result.explanation())
+            return MatchResult.unmatched(TextTree.nested(
+                TextTree.text(String.format("%s mismatched", name)),
+                result.explanation()
             ));
         }
     }
 
     @Override
-    public String describe() {
-        return String.format(
-            "%s:%s",
-            name,
-            indent("\n" + matcher.describe())
+    public TextTree describe() {
+        return TextTree.nested(
+            TextTree.text(name),
+            matcher.describe()
         );
     }
 }

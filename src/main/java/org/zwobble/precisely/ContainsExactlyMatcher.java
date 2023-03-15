@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.zwobble.precisely.Indentation.indent;
 import static org.zwobble.precisely.JavaValues.valueToString;
 
 class ContainsExactlyMatcher<T> implements Matcher<Iterable<T>> {
@@ -23,7 +22,7 @@ class ContainsExactlyMatcher<T> implements Matcher<Iterable<T>> {
         }
 
         if (actualElements.isEmpty() && !elementMatchers.isEmpty()) {
-            return MatchResult.unmatched("iterable was empty");
+            return MatchResult.unmatched(TextTree.text("iterable was empty"));
         }
 
         var matchedElementIndexes = new HashSet<Integer>();
@@ -38,16 +37,17 @@ class ContainsExactlyMatcher<T> implements Matcher<Iterable<T>> {
         if (matchedElementIndexes.size() == actualElements.size()) {
             return MatchResult.matched();
         } else {
-            var explanation = new StringBuilder();
-            explanation.append("had extra elements:");
+            var extraElements = new ArrayList<TextTree>();
             for (var elementIndex = 0; elementIndex < actualElements.size(); elementIndex++) {
                 if (!matchedElementIndexes.contains(elementIndex)) {
                     var element = actualElements.get(elementIndex);
-                    explanation.append("\n * ");
-                    explanation.append(indent(valueToString(element), 3));
+                    extraElements.add(TextTree.text(valueToString(element)));
                 }
             }
-            return MatchResult.unmatched(explanation.toString());
+            return MatchResult.unmatched(TextTree.unorderedList(
+                "had extra elements",
+                extraElements
+            ));
         }
     }
 
@@ -56,52 +56,57 @@ class ContainsExactlyMatcher<T> implements Matcher<Iterable<T>> {
         List<T> actualElements,
         Set<Integer> matchedElementIndexes
     ) {
-        var mismatches = new ArrayList<MatchResult>();
+        var mismatches = new ArrayList<TextTree>();
 
         for (var elementIndex = 0; elementIndex < actualElements.size(); elementIndex++) {
+            var actualElement = actualElements.get(elementIndex);
             if (matchedElementIndexes.contains(elementIndex)) {
-                mismatches.add(MatchResult.unmatched("already matched"));
+                mismatches.add(TextTree.nested(
+                    TextTree.text(valueToString(actualElement)),
+                    TextTree.text("already matched")
+                ));
             } else {
-                var actualElement = actualElements.get(elementIndex);
                 var elementResult = elementMatcher.match(actualElement);
                 if (elementResult.isMatch()) {
                     matchedElementIndexes.add(elementIndex);
                     return elementResult;
                 } else {
-                    mismatches.add(elementResult);
+                    mismatches.add(TextTree.nested(
+                        TextTree.text(valueToString(actualElement)),
+                        elementResult.explanation()
+                    ));
                 }
             }
         }
 
-        var explanation = new StringBuilder();
-        explanation.append("was missing element:");
-        explanation.append(indent("\n" + elementMatcher.describe()));
-        explanation.append("\nThese elements were in the iterable, but did not match the missing element:");
-        for (var elementIndex = 0; elementIndex < actualElements.size(); elementIndex++) {
-            var actualElement = actualElements.get(elementIndex);
-            var mismatch = mismatches.get(elementIndex);
-            explanation.append("\n * ");
-            explanation.append(indent(valueToString(actualElement), 3));
-            explanation.append(": ");
-            explanation.append(indent(mismatch.explanation(), 3));
-        }
-        return MatchResult.unmatched(explanation.toString());
+        return MatchResult.unmatched(TextTree.lines(
+            TextTree.nested(
+                TextTree.text("was missing element"),
+                elementMatcher.describe()
+            ),
+            TextTree.unorderedList(
+                "These elements were in the iterable, but did not match the missing element",
+                mismatches
+            )
+        ));
     }
 
     @Override
-    public String describe() {
+    public TextTree describe() {
         if (elementMatchers.isEmpty()) {
-            return "empty iterable";
+            return TextTree.text("empty iterable");
         } else if (elementMatchers.size() == 1) {
-            return "iterable containing 1 element:\n * " + indent(elementMatchers.get(0).describe(), 3);
+            return TextTree.unorderedList(
+                "iterable containing 1 element",
+                List.of(elementMatchers.get(0).describe())
+            );
         } else {
-            var explanation = new StringBuilder();
-            explanation.append(String.format("iterable containing these %s elements in any order:", elementMatchers.size()));
-            for (var elementMatcher : elementMatchers) {
-                explanation.append("\n * ");
-                explanation.append(indent(elementMatcher.describe(), 3));
-            }
-            return explanation.toString();
+            return TextTree.unorderedList(
+                String.format("iterable containing these %s elements in any order", elementMatchers.size()),
+                elementMatchers.stream()
+                    .map(Matcher::describe)
+                    .toList()
+            );
         }
     }
 }

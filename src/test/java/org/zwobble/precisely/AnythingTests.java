@@ -15,6 +15,6 @@ public class AnythingTests {
 
     @Test
     public void descriptionIsAnything() {
-        assertEquals("anything", anything().describe());
+        assertEquals("anything", anything().describe().toString());
     }
 }

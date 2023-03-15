@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.zwobble.precisely.Assertions.assertUnmatched;
 import static org.zwobble.precisely.MatchResult.matched;
-import static org.zwobble.precisely.MatchResult.unmatched;
 import static org.zwobble.precisely.Matchers.equalTo;
 import static org.zwobble.precisely.Matchers.isSequence;
 
@@ -26,7 +26,7 @@ public class IsSequenceTests {
 
         var result = matcher.match(List.of("banana", "apple"));
 
-        assertEquals(unmatched("element at index 0 mismatched:\n  was \"banana\""), result);
+        assertUnmatched("element at index 0 mismatched:\n  was \"banana\"", result);
     }
 
     @Test
@@ -35,7 +35,7 @@ public class IsSequenceTests {
 
         var result = matcher.match(List.of("apple", "banana"));
 
-        assertEquals(unmatched("element at index 2 was missing"), result);
+        assertUnmatched("element at index 2 was missing", result);
     }
 
     @Test
@@ -44,7 +44,7 @@ public class IsSequenceTests {
 
         var result = matcher.match(List.of());
 
-        assertEquals(unmatched("iterable was empty"), result);
+        assertUnmatched("iterable was empty", result);
     }
 
     @Test
@@ -62,7 +62,7 @@ public class IsSequenceTests {
 
         var result = matcher.match(List.of("apple", "banana", "coconut"));
 
-        assertEquals(unmatched("had extra elements:\n * \"banana\"\n * \"coconut\""), result);
+        assertUnmatched("had extra elements:\n * \"banana\"\n * \"coconut\"", result);
     }
 
     @Test
@@ -71,7 +71,7 @@ public class IsSequenceTests {
 
         var result = matcher.describe();
 
-        assertEquals("empty iterable", result);
+        assertEquals("empty iterable", result.toString());
     }
 
     @Test
@@ -80,6 +80,6 @@ public class IsSequenceTests {
 
         var result = matcher.describe();
 
-        assertEquals("iterable containing in order:\n 0: \"apple\"\n 1: \"banana\"", result);
+        assertEquals("iterable containing in order:\n 0: \"apple\"\n 1: \"banana\"", result.toString());
     }
 }

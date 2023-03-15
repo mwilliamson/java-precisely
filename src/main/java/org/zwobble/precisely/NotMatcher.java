@@ -10,14 +10,22 @@ class NotMatcher<T> implements Matcher<T> {
     @Override
     public MatchResult match(T actual) {
         if (matcher.match(actual).isMatch()) {
-            return MatchResult.unmatched("matched: " + matcher.describe());
+            return MatchResult.unmatched(
+                TextTree.nested(
+                    TextTree.text("matched"),
+                    matcher.describe()
+                )
+            );
         } else {
             return MatchResult.matched();
         }
     }
 
     @Override
-    public String describe() {
-        return "not: " + matcher.describe();
+    public TextTree describe() {
+        return TextTree.nested(
+            TextTree.text("not"),
+            matcher.describe()
+        );
     }
 }

@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.zwobble.precisely.Assertions.assertUnmatched;
 import static org.zwobble.precisely.MatchResult.matched;
-import static org.zwobble.precisely.MatchResult.unmatched;
 import static org.zwobble.precisely.Matchers.containsExactly;
 import static org.zwobble.precisely.Matchers.equalTo;
 
@@ -26,12 +26,14 @@ public class ContainsExactlyTests {
 
         var result = matcher.match(List.of("coconut", "apple"));
 
-        assertEquals(unmatched("""
+        assertUnmatched("""
             was missing element:
               "banana"
             These elements were in the iterable, but did not match the missing element:
-             * "coconut": was "coconut"
-             * "apple": already matched"""), result);
+             * "coconut":
+                 was "coconut"
+             * "apple":
+                 already matched""", result);
     }
 
     @Test
@@ -40,11 +42,12 @@ public class ContainsExactlyTests {
 
         var result = matcher.match(List.of("apple"));
 
-        assertEquals(unmatched("""
+        assertUnmatched("""
             was missing element:
               "apple"
             These elements were in the iterable, but did not match the missing element:
-             * "apple": already matched"""), result);
+             * "apple":
+                 already matched""", result);
     }
 
     @Test
@@ -53,7 +56,7 @@ public class ContainsExactlyTests {
 
         var result = matcher.match(List.of());
 
-        assertEquals(unmatched("iterable was empty"), result);
+        assertUnmatched("iterable was empty", result);
     }
 
     @Test
@@ -71,7 +74,7 @@ public class ContainsExactlyTests {
 
         var result = matcher.match(List.of("coconut", "apple"));
 
-        assertEquals(unmatched("had extra elements:\n * \"coconut\""), result);
+        assertUnmatched("had extra elements:\n * \"coconut\"", result);
     }
 
     @Test
@@ -80,7 +83,7 @@ public class ContainsExactlyTests {
 
         var result = matcher.describe();
 
-        assertEquals("empty iterable", result);
+        assertEquals("empty iterable", result.toString());
     }
 
     @Test
@@ -89,7 +92,7 @@ public class ContainsExactlyTests {
 
         var result = matcher.describe();
 
-        assertEquals("iterable containing 1 element:\n * \"apple\"", result);
+        assertEquals("iterable containing 1 element:\n * \"apple\"", result.toString());
     }
 
     @Test
@@ -98,6 +101,6 @@ public class ContainsExactlyTests {
 
         var result = matcher.describe();
 
-        assertEquals("iterable containing these 2 elements in any order:\n * \"apple\"\n * \"banana\"", result);
+        assertEquals("iterable containing these 2 elements in any order:\n * \"apple\"\n * \"banana\"", result.toString());
     }
 }

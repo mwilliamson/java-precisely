@@ -1,11 +1,11 @@
 package org.zwobble.precisely;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.zwobble.precisely.Indentation.indent;
 import static org.zwobble.precisely.JavaValues.valueToString;
 
-public class IsSequenceMatcher<T> implements Matcher<Iterable<T>> {
+class IsSequenceMatcher<T> implements Matcher<Iterable<T>> {
     private final List<Matcher<? super T>> elementMatchers;
 
     IsSequenceMatcher(List<Matcher<? super T>> elementMatchers) {
@@ -20,14 +20,15 @@ public class IsSequenceMatcher<T> implements Matcher<Iterable<T>> {
 
         while (actualIterator.hasNext()) {
             if (!elementMatchersIterator.hasNext()) {
-                var explanation = new StringBuilder();
-                explanation.append("had extra elements:");
+                var extraElements = new ArrayList<TextTree>();
                 while (actualIterator.hasNext()) {
                     var actualElement = actualIterator.next();
-                    explanation.append("\n * ");
-                    explanation.append(indent(valueToString(actualElement), 3));
+                    extraElements.add(TextTree.text(valueToString(actualElement)));
                 }
-                return MatchResult.unmatched(explanation.toString());
+                return MatchResult.unmatched(TextTree.unorderedList(
+                    "had extra elements",
+                    extraElements
+                ));
             }
 
             var actualElement = actualIterator.next();
@@ -35,10 +36,12 @@ public class IsSequenceMatcher<T> implements Matcher<Iterable<T>> {
 
             var elementResult = elementMatcher.match(actualElement);
             if (!elementResult.isMatch()) {
-                return MatchResult.unmatched(String.format(
-                    "element at index %s mismatched:%s",
-                    elementIndex,
-                    indent("\n" + elementResult.explanation(), 2)
+                return MatchResult.unmatched(TextTree.nested(
+                    TextTree.text(String.format(
+                        "element at index %s mismatched",
+                        elementIndex
+                    )),
+                    elementResult.explanation()
                 ));
             }
             elementIndex++;
@@ -46,12 +49,12 @@ public class IsSequenceMatcher<T> implements Matcher<Iterable<T>> {
 
         if (elementMatchersIterator.hasNext()) {
             if (elementIndex == 0) {
-                return MatchResult.unmatched("iterable was empty");
+                return MatchResult.unmatched(TextTree.text("iterable was empty"));
             } else {
-                return MatchResult.unmatched(String.format(
+                return MatchResult.unmatched(TextTree.text(String.format(
                     "element at index %s was missing",
                     elementIndex
-                ));
+                )));
             }
         }
 
@@ -59,23 +62,16 @@ public class IsSequenceMatcher<T> implements Matcher<Iterable<T>> {
     }
 
     @Override
-    public String describe() {
+    public TextTree describe() {
         if (elementMatchers.isEmpty()) {
-            return "empty iterable";
+            return TextTree.text("empty iterable");
         } else {
-            var description = new StringBuilder();
-            description.append("iterable containing in order:");
-
-            var elementIndex = 0;
-            for (var elementMatcher : elementMatchers) {
-                var prefix = String.format(" %s: ", elementIndex);
-                description.append("\n");
-                description.append(prefix);
-                description.append(indent(elementMatcher.describe(), prefix.length()));
-                elementIndex++;
-            }
-
-            return description.toString();
+            return TextTree.orderedList(
+                "iterable containing in order",
+                elementMatchers.stream()
+                    .map(Matcher::describe)
+                    .toList()
+            );
         }
     }
 }

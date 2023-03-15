@@ -3,8 +3,8 @@ package org.zwobble.precisely;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.zwobble.precisely.Assertions.assertUnmatched;
 import static org.zwobble.precisely.MatchResult.matched;
-import static org.zwobble.precisely.MatchResult.unmatched;
 import static org.zwobble.precisely.Matchers.*;
 
 public class AnyOfTests {
@@ -38,12 +38,12 @@ public class AnyOfTests {
 
         var result = matcher.match("alice");
 
-        assertEquals(unmatched("""
+        assertUnmatched("""
             did not match any of:
-             * "bob"
-               was "alice"
-             * "jim"
-               was "alice\""""), result);
+             * "bob":
+                 was "alice"
+             * "jim":
+                 was "alice\"""", result);
     }
 
     @Test
@@ -60,6 +60,6 @@ public class AnyOfTests {
              * username:
                  "Bob"
              * emailAddress:
-                 "bob@example.com\"""", result);
+                 "bob@example.com\"""", result.toString());
     }
 }
