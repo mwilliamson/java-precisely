@@ -3,8 +3,6 @@ package org.zwobble.precisely;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.zwobble.precisely.JavaValues.valueToString;
-
 class IsSequenceMatcher<T> implements Matcher<Iterable<T>> {
     private final List<Matcher<? super T>> elementMatchers;
 
@@ -23,7 +21,7 @@ class IsSequenceMatcher<T> implements Matcher<Iterable<T>> {
                 var extraElements = new ArrayList<TextTree>();
                 while (actualIterator.hasNext()) {
                     var actualElement = actualIterator.next();
-                    extraElements.add(TextTree.text(valueToString(actualElement)));
+                    extraElements.add(TextTree.object(actualElement));
                 }
                 return MatchResult.unmatched(TextTree.unorderedList(
                     "had extra elements",

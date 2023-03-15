@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.zwobble.precisely.JavaValues.valueToString;
-
 class ContainsExactlyMatcher<T> implements Matcher<Iterable<T>> {
     private final List<Matcher<? super T>> elementMatchers;
 
@@ -41,7 +39,7 @@ class ContainsExactlyMatcher<T> implements Matcher<Iterable<T>> {
             for (var elementIndex = 0; elementIndex < actualElements.size(); elementIndex++) {
                 if (!matchedElementIndexes.contains(elementIndex)) {
                     var element = actualElements.get(elementIndex);
-                    extraElements.add(TextTree.text(valueToString(element)));
+                    extraElements.add(TextTree.object(element));
                 }
             }
             return MatchResult.unmatched(TextTree.unorderedList(
@@ -62,7 +60,7 @@ class ContainsExactlyMatcher<T> implements Matcher<Iterable<T>> {
             var actualElement = actualElements.get(elementIndex);
             if (matchedElementIndexes.contains(elementIndex)) {
                 mismatches.add(TextTree.nested(
-                    TextTree.text(valueToString(actualElement)),
+                    TextTree.object(actualElement),
                     TextTree.text("already matched")
                 ));
             } else {
@@ -72,7 +70,7 @@ class ContainsExactlyMatcher<T> implements Matcher<Iterable<T>> {
                     return elementResult;
                 } else {
                     mismatches.add(TextTree.nested(
-                        TextTree.text(valueToString(actualElement)),
+                        TextTree.object(actualElement),
                         elementResult.explanation()
                     ));
                 }

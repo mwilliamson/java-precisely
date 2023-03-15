@@ -17,6 +17,14 @@ public abstract sealed class TextTree {
         return new TextTreeNested(outer, inner);
     }
 
+    public static TextTree object(Object value) {
+        return new TextTreeObject("", value);
+    }
+
+    public static TextTree object(String prefix, Object value) {
+        return new TextTreeObject(prefix, value);
+    }
+
     public static TextTree orderedList(String heading, List<TextTree> children) {
         return new TextTreeList(index -> index + ":", heading, children);
     }
@@ -139,6 +147,26 @@ final class TextTreeNested extends TextTree {
             writer.newLine();
             inner.write(writer);
         });
+    }
+}
+
+final class TextTreeObject extends TextTree {
+    private final String prefix;
+    private final Object value;
+
+    TextTreeObject(String prefix, Object value) {
+        this.prefix = prefix;
+        this.value = value;
+    }
+
+    @Override
+    void write(TextTreeWriter writer) {
+        writer.write(prefix);
+        if (value instanceof String string) {
+            writer.write(JavaStrings.toJavaLiteralString(string));
+        } else {
+            writer.write(value.toString());
+        }
     }
 }
 
