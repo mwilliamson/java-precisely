@@ -2,6 +2,7 @@ package org.zwobble.precisely;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 public class Matchers {
@@ -58,6 +59,10 @@ public class Matchers {
 
     public static <T, U> Matcher<U> instanceOf(Class<T> clazz, List<Matcher<? super T>> matchers) {
         return new InstanceOfMatcher<T, U>(clazz, matchers);
+    }
+
+    public static <T> Matcher<Optional<T>> isOptionalOf(Matcher<T> matcher) {
+        return new IsOptionalOfMatcher(matcher);
     }
 
     @SafeVarargs

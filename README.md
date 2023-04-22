@@ -131,6 +131,14 @@ Matchers can be create using static methods on `org.zwobble.precisely.Matchers`:
   ));
   ```
 
+* `<T> Matcher<Optional<T>> isOptionalOf(Matcher<T> valueMatcher)`:
+  matches an optional value if it contains a value matching the given matcher.
+  For instance:
+
+  ```java
+  assertThat(result, isOptionalOf(equalTo("Bob")));
+  ```
+
 * `Matcher<Iterable<T>> isSequence<T>(Matcher<? super T>... elements)`,
   `Matcher<Iterable<T>> isSequence<T>(List<Matcher<? super T>> elements)`:
   matches an iterable if it has the same elements in the same order.
