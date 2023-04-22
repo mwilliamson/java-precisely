@@ -62,7 +62,7 @@ public class Matchers {
     }
 
     public static <T> Matcher<Optional<T>> isOptionalOf(Matcher<T> matcher) {
-        return new IsOptionalOfMatcher(matcher);
+        return new IsOptionalOfMatcher<T>(matcher);
     }
 
     @SafeVarargs
