@@ -61,7 +61,7 @@ public class Matchers {
         return new InstanceOfMatcher<T, U>(clazz, matchers);
     }
 
-    public static <T> Matcher<Optional<T>> isOptionalOf(Matcher<? super T> matcher) {
+    public static <T> Matcher<Optional<? extends T>> isOptionalOf(Matcher<? super T> matcher) {
         return new IsOptionalOfMatcher<T>(matcher);
     }
 

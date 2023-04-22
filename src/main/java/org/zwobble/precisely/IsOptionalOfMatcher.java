@@ -2,7 +2,7 @@ package org.zwobble.precisely;
 
 import java.util.Optional;
 
-public class IsOptionalOfMatcher<T> implements Matcher<Optional<T>> {
+public class IsOptionalOfMatcher<T> implements Matcher<Optional<? extends T>> {
     private final Matcher<? super T> valueMatcher;
 
     public IsOptionalOfMatcher(Matcher<? super T> valueMatcher) {
@@ -10,7 +10,7 @@ public class IsOptionalOfMatcher<T> implements Matcher<Optional<T>> {
     }
 
     @Override
-    public MatchResult match(Optional<T> actual) {
+    public MatchResult match(Optional<? extends T> actual) {
         if (actual.isEmpty()) {
             return MatchResult.unmatched(TextTree.text("was empty"));
         } else {
