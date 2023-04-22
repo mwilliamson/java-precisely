@@ -3,9 +3,9 @@ package org.zwobble.precisely;
 import java.util.Optional;
 
 public class IsOptionalOfMatcher<T> implements Matcher<Optional<T>> {
-    private final Matcher<T> valueMatcher;
+    private final Matcher<? super T> valueMatcher;
 
-    public IsOptionalOfMatcher(Matcher<T> valueMatcher) {
+    public IsOptionalOfMatcher(Matcher<? super T> valueMatcher) {
         this.valueMatcher = valueMatcher;
     }
 
