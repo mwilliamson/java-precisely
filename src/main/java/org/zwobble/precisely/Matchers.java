@@ -61,7 +61,7 @@ public class Matchers {
         return new InstanceOfMatcher<T, U>(clazz, matchers);
     }
 
-    public static <T> Matcher<Optional<T>> isOptionalEmpty() {
+    public static <T> Matcher<Optional<? extends T>> isOptionalEmpty() {
         return new IsOptionalEmptyMatcher<>();
     }
 
