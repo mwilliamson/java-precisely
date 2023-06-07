@@ -2,9 +2,9 @@ package org.zwobble.precisely;
 
 import java.util.Optional;
 
-public class IsOptionalEmptyMatcher<T> implements Matcher<Optional<? extends T>> {
+public class IsOptionalEmptyMatcher<T> implements Matcher<Optional<T>> {
     @Override
-    public MatchResult match(Optional<? extends T> actual) {
+    public MatchResult match(Optional<T> actual) {
         if (actual.isEmpty()) {
             return MatchResult.matched();
         } else {
