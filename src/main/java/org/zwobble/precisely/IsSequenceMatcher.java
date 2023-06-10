@@ -3,7 +3,7 @@ package org.zwobble.precisely;
 import java.util.ArrayList;
 import java.util.List;
 
-class IsSequenceMatcher<T> implements Matcher<Iterable<T>> {
+class IsSequenceMatcher<T> implements Matcher<Iterable<? extends T>> {
     private final List<Matcher<? super T>> elementMatchers;
 
     IsSequenceMatcher(List<Matcher<? super T>> elementMatchers) {
@@ -11,7 +11,7 @@ class IsSequenceMatcher<T> implements Matcher<Iterable<T>> {
     }
 
     @Override
-    public MatchResult match(Iterable<T> actual) {
+    public MatchResult match(Iterable<? extends T> actual) {
         var actualIterator = actual.iterator();
         var elementMatchersIterator = elementMatchers.iterator();
         var elementIndex = 0;

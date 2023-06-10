@@ -70,11 +70,11 @@ public class Matchers {
     }
 
     @SafeVarargs
-    public static <T> Matcher<Iterable<T>> isSequence(Matcher<? super T>... elements) {
+    public static <T> Matcher<Iterable<? extends T>> isSequence(Matcher<? super T>... elements) {
         return new IsSequenceMatcher<T>(Arrays.asList(elements));
     }
 
-    public static <T> Matcher<Iterable<T>> isSequence(List<Matcher<? super T>> elements) {
+    public static <T> Matcher<Iterable<? extends T>> isSequence(List<Matcher<? super T>> elements) {
         return new IsSequenceMatcher<T>(elements);
     }
 
