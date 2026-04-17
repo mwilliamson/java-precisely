@@ -21,7 +21,7 @@ public class UniqueTests {
         var result = unique(List.of("a", "a", "b", "a", "b"));
 
         assertThat(result, containsExactly(equalTo("a"), equalTo("b")));
-    }   
+    }
 }
 ```
 
@@ -63,7 +63,7 @@ Matchers can be create using static methods on `org.zwobble.precisely.Matchers`:
   `<T> Matcher<T> allOf<T>(List<Matcher<? super T>> matchers)`:
   matches a value if all sub-matchers match.
   For instance:
-  
+
   ```java
   assertThat(result, allOf(
       has("username", User::username, equalTo("Bob")),
@@ -130,6 +130,9 @@ Matchers can be create using static methods on `org.zwobble.precisely.Matchers`:
       has("username", User::username, equalTo("Bob"))
   ));
   ```
+
+* `<T> Matcher<Optional<T>> isOptionalEmpty()`:
+  matches `Optional.empty()`.
 
 * `<T> Matcher<Optional<T>> isOptionalOf(Matcher<T> valueMatcher)`:
   matches an optional value if it contains a value matching the given matcher.
